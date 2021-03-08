@@ -34,7 +34,7 @@ class seq_mut:
         self.position = position
         self.mut_res = mut_res
     def mutant(self):
-        self.input_seq[self.position] = self.mut_res
+        self.input_seq[self.position] = self.mut_res #edit so that the original self.input_seq is not altered
         return self.input_seq
     def wild_type(self):
         return self.input_seq
