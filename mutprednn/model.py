@@ -14,7 +14,7 @@ class ProtBertBFD:
         embedding = fe(prot_seq)
         return np.array(embedding)
 
-    def predict_aa(self, prot_seq):
+    def predict_aa(self, masked_prot_seq):
         fm = FillMaskPipeline(model=self.model, tokenizer=self.tokenizer, device=self.cdevice)
-        missing_aa_prob = fm(prot_seq)
+        missing_aa_prob = fm(masked_prot_seq)
         return np.array(missing_aa_prob)
