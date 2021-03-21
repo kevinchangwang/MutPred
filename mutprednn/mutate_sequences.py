@@ -5,7 +5,8 @@ import urllib.request
 import pandas as pd
 from Bio import SeqIO
 
-class ReadVarityMutationData:
+
+class ReadMutationTable:
     def __init__(self, data_file_path, delimiter, pid_head, aapos_head, aaref_head, aaalt_head):
         self.data_file_path = data_file_path
         self.delimiter = delimiter
@@ -26,34 +27,33 @@ class ReadVarityMutationData:
             savefile_path = os.path.join(save_path, save_file_name)
             urllib.request.urlretrieve(fasta_url, savefile_path)
 
-### Need to combine the SeqIOReadSeqFile class into ReadVarityMutationData 
+
+# class SeqMut:
+#     def __init__(self, input_seq, position, mut_res):
+#         self.input_seq = input_seq
+#         self.position = position
+#         self.mut_res = mut_res
+#
+#     def mutant(self):
+#         seq = list(self.input_seq)
+#         seq[self.position] = self.mut_res
+#         return str(seq)
+#
+#     def wild_type(self):
+#         return str(self.input_seq)
 
 
-class SeqIOReadSeqFile:
-    def __init__(self, input_file_path, file_type):
-        self.input_file_path = input_file_path
-        self.file_type = file_type
-        self.record = SeqIO.parse(input_file_path, file_type)
+def main():
+    datafilepath = '/home/kevinchangwang/RothLab/MutPred/datasets/VARITY_R_training.csv'
+    delimiter = ','
+    pid_head = 'p_vid'
+    aapos_head, aaref_head, aaalt_head = 'aa_pos', 'aa_ref', 'aa_alt'
+    fasta_dir = '/home/kevinchangwang/RothLab/MutPred/fasta_files'
 
-    def prot_seq(self, record_index):
-        record = self.record[record_index]
-        return record.seq
-
-    def prot_id(self, record_index):
-        record = self.record[record_index]
-        return record.id
+    data = ReadMutationTable(datafilepath, delimiter, pid_head, aapos_head, aaref_head, aaalt_head)
+    data.get_uniprot_canonical_seq(fasta_dir)
+    print('Fasta files downloaded from UniProt located in' + fasta_dir)
 
 
-class SeqMut:
-    def __init__(self, input_seq, position, mut_res):
-        self.input_seq = input_seq
-        self.position = position
-        self.mut_res = mut_res
-
-    def mutant(self):
-        seq = list(self.input_seq)
-        seq[self.position] = self.mut_res
-        return str(seq)
-
-    def wild_type(self):
-        return str(self.input_seq)
+if __name__ == '__main__':
+    main()
