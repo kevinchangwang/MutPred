@@ -6,7 +6,6 @@ from Bio import SeqIO
 import os
 import requests
 from tqdm.auto import tqdm
-from mutprednn import mutate_sequences, model
 import pandas as pd
 import matplotlib
 import seaborn

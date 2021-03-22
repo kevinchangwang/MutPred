@@ -1,31 +1,8 @@
 import os.path
-from Bio import SeqIO
 import urllib.parse
 import urllib.request
 import pandas as pd
 from Bio import SeqIO
-
-
-class ReadMutationTable:
-    def __init__(self, data_file_path, delimiter, pid_head, aapos_head, aaref_head, aaalt_head):
-        self.data_file_path = data_file_path
-        self.delimiter = delimiter
-        self.pid_head = pid_head
-        self.aapos_head = aapos_head
-        self.aaref_head = aaref_head
-        self.aaalt_head = aaalt_head
-        self.data = pd.read_table(self.data_file_path, sep=self.delimiter)
-        self.prot_id = self.data[self.pid_head]
-        self.aa_pos = self.data[self.aapos_head]
-        self.aa_ref = self.data[self.aaref_head]
-        self.aa_alt = self.data[self.aaalt_head]
-
-    def get_uniprot_canonical_seq(self, save_path):
-        for prot_symbol in self.prot_id:
-            fasta_url = "https://www.uniprot.org/uniprot/"+str(prot_symbol)+'.fasta'
-            save_file_name = prot_symbol+".fasta"
-            savefile_path = os.path.join(save_path, save_file_name)
-            urllib.request.urlretrieve(fasta_url, savefile_path)
 
 
 # class SeqMut:
