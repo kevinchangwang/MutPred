@@ -19,11 +19,15 @@ class ReadMutationTable:
         self.aa_alt = self.data[self.aaalt_head]
 
     def get_uniprot_canonical_seq(self, save_path):
-        for prot_symbol in self.prot_id:
+        unique_ids = self.prot_id.unique()
+        for prot_symbol in unique_ids:
             fasta_url = "https://www.uniprot.org/uniprot/"+str(prot_symbol)+'.fasta'
             save_file_name = prot_symbol+".fasta"
             savefile_path = os.path.join(save_path, save_file_name)
             urllib.request.urlretrieve(fasta_url, savefile_path)
+
+#Set current directory and make sure that the correct subdirectories are present.
+#/datasets for the .csv containing protein ids and /fasta_files for the retrieved sequence files.
 
 
 def main():
@@ -36,7 +40,6 @@ def main():
 
     data = ReadMutationTable(datafilepath, delimiter, pid_head, aapos_head, aaref_head, aaalt_head)
     data.get_uniprot_canonical_seq(fasta_dir)
-    
 
 
 if __name__ == '__main__':
