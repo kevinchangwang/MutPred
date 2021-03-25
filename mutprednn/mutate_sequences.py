@@ -4,21 +4,25 @@ import urllib.request
 import pandas as pd
 from Bio import SeqIO
 
-class
+class ReadMutationTable:
+    def __init__(self, mutation_data_path, file_type, delimiter, pid_head, aa_pos_head, aa_wt_head, aa_mut_head):
+        self.mutation_data_path = mutation_data_path
+        self.file_type = file_type
+        self.delimiter = delimiter
+        self.pid_head = pid_head
+        self.aa_pos_head = aa_pos_head
+        self.aa_wt_head = aa_wt_head
+        self.aa_mut_head = aa_mut_head
+        self.data = pd.read_table(self.mutation_data_path, sep=self.delimiter)
+        self.pid = self.data[self.pid_head]
+        self.aapos = self.data[self.aa_pos_head]
+        self.aawt = self.data[self.aa_wt_head]
+        self.aamut = self.data[self.aa_mut_head]
 
-class SeqMut:
-    def __init__(self, input_seq, position, mut_res):
-        self.input_seq = input_seq
-        self.position = position
-        self.mut_res = mut_res
-
-    def mutant(self):
-        seq = list(self.input_seq)
-        seq[self.position] = self.mut_res
-        return str(seq)
-
-    def wild_type(self):
-        return str(self.input_seq)
+    def mutate_fasta_seq(self, fasta_files_dir):
+        for id in self.pid:
+            pass
+        pass
 
 
 def main():
