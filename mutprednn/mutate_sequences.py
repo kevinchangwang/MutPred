@@ -3,8 +3,9 @@ import urllib.parse
 import urllib.request
 import pandas as pd
 from Bio import SeqIO
+import csv
 
-class ReadMutationTable:
+class WriteMutationSeqTable:
     def __init__(self, mutation_data_path, file_type, delimiter, pid_head, aa_pos_head, aa_wt_head, aa_mut_head):
         self.mutation_data_path = mutation_data_path
         self.file_type = file_type
@@ -19,8 +20,16 @@ class ReadMutationTable:
         self.aawt = self.data[self.aa_wt_head]
         self.aamut = self.data[self.aa_mut_head]
 
-    def mutate_fasta_seq(self, fasta_files_dir):
-        for id in self.pid:
+    def mutate_fasta_seq(self, concatenated_fasta_file_path):
+        fastas = SeqIO.parse(concatenated_fasta_file_path, "fasta")
+        return fastas
+
+    def write_row(self, output_file_path):
+        pass
+
+
+
+
 
 
 
