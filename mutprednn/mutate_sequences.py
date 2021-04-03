@@ -21,8 +21,8 @@ class ReadMutationTable:
 
     def mutate_fasta_seq(self, fasta_files_dir):
         for id in self.pid:
-            pass
-        pass
+
+
 
 
 def main():
