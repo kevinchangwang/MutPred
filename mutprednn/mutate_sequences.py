@@ -1,14 +1,17 @@
-import os.path
-import urllib.parse
-import urllib.request
 import pandas as pd
 from Bio import SeqIO
 import csv
 
 class WriteMutationSeqTable:
-    def __init__(self, mutation_data_path, file_type, delimiter, pid_head, aa_pos_head, aa_wt_head, aa_mut_head):
+    def __init__(self,
+                 mutation_data_path,
+                 fasta_files_path,
+                 delimiter,
+                 pid_head,
+                 aa_pos_head,
+                 aa_wt_head,
+                 aa_mut_head):
         self.mutation_data_path = mutation_data_path
-        self.file_type = file_type
         self.delimiter = delimiter
         self.pid_head = pid_head
         self.aa_pos_head = aa_pos_head
@@ -19,19 +22,40 @@ class WriteMutationSeqTable:
         self.aapos = self.data[self.aa_pos_head]
         self.aawt = self.data[self.aa_wt_head]
         self.aamut = self.data[self.aa_mut_head]
+        self.fasta_dir = fasta_files_path
 
-    def mutate_fasta_seq(self, concatenated_fasta_file_path):
-        fastas = SeqIO.parse(concatenated_fasta_file_path, "fasta")
-        return fastas
+    def wt_fasta_seq(self, p_idx):
+        fasta = SeqIO.read(self.fasta_dir + "/" + self.pid[p_idx] + ".fasta", "fasta")
+        wt_seq = fasta.seq
+        return str(wt_seq)
 
-    def write_row(self, output_file_path):
-        pass
+    def mut_fasta_seq(self, p_idx):
+        fasta = SeqIO.read(self.fasta_dir + "/" + self.pid[p_idx] + ".fasta", "fasta")
+        seq = fasta.seq
+        mutable_seq = seq.tomutable()
+        pos = int(self.aapos[p_idx])
+        mutable_seq[pos] = self.aamut[p_idx]
+        mut_seq = mutable_seq.toseq()
+        return str(mut_seq)
 
+    def protein_mutation(self, p_idx):
+        mutation = "p" + str(self.aawt[p_idx]) + str(self.aapos[p_idx]) + str(self.aamut[p_idx])
+        return mutation
 
+    def write_row(self, p_idx, output_file_path):
+        protein_id = self.pid[p_idx]
+        mutation = self.protein_mutation(p_idx)
+        wt_seq = self.wt_fasta_seq(p_idx)
+        mut_seq = self.mut_fasta_seq(p_idx)
+        row = [protein_id, mutation, wt_seq, mut_seq]
+        f = open(output_file_path)
+        with f:
+            writer = csv.writer(f)
+            writer.writerow(row)
 
-
-
-
+    def write_table(self, output_file_path):
+        for i in self.pid:
+            self.write_row(i, output_file_path)
 
 
 def main():
