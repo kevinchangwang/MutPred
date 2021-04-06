@@ -2,6 +2,7 @@ import pandas as pd
 from Bio import SeqIO
 import csv
 
+
 class WriteMutationSeqTable:
     def __init__(self,
                  mutation_data_path,
@@ -59,7 +60,22 @@ class WriteMutationSeqTable:
 
 
 def main():
-    pass
+    mutation_data = WriteMutationSeqTable(
+        mutation_data_path="datasets/VARITY_R_training.csv",
+        fasta_files_path="fasta_files",
+        delimiter=",",
+        pid_head="p_vid",
+        aa_pos_head="aa_pos",
+        aa_wt_head="aa_ref",
+        aa_mut_head="aa_alt"
+    )
+    output_file_path = "mutation_table.csv"
+    heading_row = "protein_id, mutation, wt_seq, mut_seq"
+    f = open(output_file_path)
+    with f:
+        writer = csv.writer(f)
+        writer.writerow(heading_row)
+    mutation_data.write_table(output_file_path)
 
 
 if __name__ == '__main__':
